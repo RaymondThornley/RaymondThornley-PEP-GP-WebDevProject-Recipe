@@ -8,12 +8,16 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  * TODO: Get references to various DOM elements
  * - usernameInput, emailInput, passwordInput, repeatPasswordInput, registerButton
  */
-
+const usernameInput = document.getElementById("username-input");
+const emailInput = document.getElementById("email-input");
+const passwordInput = document.getElementById("password-input");
+const repeatPasswordInput = document.getElementById("repeat-password-input");
+const registerButton = document.getElementById("register-button");
 
 /* 
  * TODO: Ensure the register button calls processRegistration when clicked
  */
-
+registerButton.addEventListener("click", processRegistration);
 
 /**
  * TODO: Process Registration Function
@@ -40,22 +44,59 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  */
 async function processRegistration() {
     // Implement registration logic here
+    try {
+        const username = usernameInput.value;
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const repeatPassword = repeatPasswordInput.value;
+
+        if (username.length == 0) {
+            throw new Error("Username field is blank.");
+        }
+        if (email.length == 0) {
+            throw new Error("Email field is blank.");
+        }
+        if (password.length == 0) {
+            throw new Error("Password field is blank.");
+        }
+        if (repeatPassword.length == 0) {
+            throw new Error("Repeat Password field is blank.");
+        }
+        if (password != repeatPassword) {
+            throw new Error("Passwords don't match.");
+        }
+
+        const registerBody = { username, email, password };
 
     // Example placeholder:
     // const registerBody = { username, email, password };
-const requestOptions = {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*"
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify(registerBody)
-    };
+        const requestOptions = {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*"
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify(registerBody)
+        };
     // await fetch(...)
+        await fetch(`${BASE_URL}/register`, requestOptions).then((response) => {
+            if (response.status == 409) {
+                throw new Error("User/Email already exists.");
+            } else if (response.status != 201) {
+                throw new Error("Something went wrong.");
+            } else {
+                window.location.href = "/login"
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
 }
