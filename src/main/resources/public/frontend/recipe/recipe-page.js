@@ -16,15 +16,33 @@ window.addEventListener("DOMContentLoaded", () => {
      * - Admin link and logout button
      * - Search input
     */
+    const searchInput = document.getElementById("search-input");
+    const searchButton = document.getElementById("search-button");
+    const addRecipeNameInput = document.getElementById("add-recipe-name-input");
+    const addRecipeInstructionsInput = document.getElementById("add-recipe-instructions-input");
+    const addRecipeSubmitInput = document.getElementById("add-recipe-submit-input");
+    const updateRecipeNameInput = document.getElementById("update-recipe-name-input");
+    const updateRecipeInstructionsInput = document.getElementById("update-recipe-instructions-input");
+    const updateRecipeSubmitInput = document.getElementById("update-recipe-submit-input");
+    const deleteRecipeNameInput = document.getElementById("delete-recipe-name-input");
+    const deleteRecipeSubmitInput = document.getElementById("delete-recipe-submit-input");
+    const recipeListContainer = document.getElementById("recipe-list");
+    const adminLink = document.getElementById("admin-link");
+    const logoutButton = document.getElementById("logout-button");
 
     /*
      * TODO: Show logout button if auth-token exists in sessionStorage
      */
+    if (sessionStorage.getItem("auth-token")) {
+        logoutButton.removeAttribute("hidden");
+    }
 
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
      */
-
+    if (sessionStorage.getItem("is-admin")) {
+        adminLink.removeAttribute("hidden");
+    }
     /*
      * TODO: Attach event handlers
      * - Add recipe button → addRecipe()
@@ -33,11 +51,16 @@ window.addEventListener("DOMContentLoaded", () => {
      * - Search button → searchRecipes()
      * - Logout button → processLogout()
      */
+    addRecipeSubmitInput.addEventListener("click", addRecipe);
+    updateRecipeSubmitInput.addEventListener("click", updateRecipe);
+    deleteRecipeSubmitInput.addEventListener("click", deleteRecipe);
+    searchButton.addEventListener("click", searchRecipes);
+    logoutButton.addEventListener("click", processLogout);
 
     /*
      * TODO: On page load, call getRecipes() to populate the list
      */
-
+    getRecipes();
 
     /**
      * TODO: Search Recipes Function
