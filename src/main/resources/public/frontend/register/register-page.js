@@ -44,47 +44,52 @@ registerButton.addEventListener("click", processRegistration);
  */
 async function processRegistration() {
     // Implement registration logic here
-    try {
-        const username = usernameInput.value;
-        const email = emailInput.value;
-        const password = passwordInput.value;
-        const repeatPassword = repeatPasswordInput.value;
+    const username = usernameInput.value;
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const repeatPassword = repeatPasswordInput.value;
 
-        if (username.length == 0) {
-            throw new Error("Username field is blank.");
-        }
-        if (email.length == 0) {
-            throw new Error("Email field is blank.");
-        }
-        if (password.length == 0) {
-            throw new Error("Password field is blank.");
-        }
-        if (repeatPassword.length == 0) {
-            throw new Error("Repeat Password field is blank.");
-        }
-        if (password != repeatPassword) {
-            throw new Error("Passwords don't match.");
-        }
+    if (username.length == 0) {
+        alert("Username field is blank.");
+        return;
+    }
+    if (email.length == 0) {
+        alert("Email field is blank.");
+        return;
+    }
+    if (password.length == 0) {
+        alert("Password field is blank.");
+        return;
+    }
+    if (repeatPassword.length == 0) {
+        alert("Repeat Password field is blank.");
+        return;
+    }
+    if (password != repeatPassword) {
+        alert("Passwords don't match.");
+        return;
+    }
 
-        const registerBody = { username, email, password };
+    const registerBody = { username, email, password };
 
     // Example placeholder:
     // const registerBody = { username, email, password };
-        const requestOptions = {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "*"
-            },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
-            body: JSON.stringify(registerBody)
-        };
+    const requestOptions = {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*"
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify(registerBody)
+    };
     // await fetch(...)
+    try {
         await fetch(`${BASE_URL}/register`, requestOptions).then((response) => {
             if (response.status == 409) {
                 throw new Error("User/Email already exists.");
