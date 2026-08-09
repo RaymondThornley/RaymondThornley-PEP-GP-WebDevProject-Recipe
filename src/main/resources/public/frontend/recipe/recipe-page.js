@@ -40,7 +40,7 @@ window.addEventListener("DOMContentLoaded", () => {
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
      */
-    if (sessionStorage.getItem("is-admin")) {
+    if (sessionStorage.getItem("is-admin") == "true") {
         adminLink.removeAttribute("hidden");
     }
     /*
@@ -319,20 +319,20 @@ window.addEventListener("DOMContentLoaded", () => {
             referrerPolicy: "no-referrer"
         }
 
-    try {
-        await fetch(`${BASE_URL}/recipes`, requestOptions).then(async (response) => {
-            if (response.ok) {
-                recipes = await response.json();
-                refreshRecipeList();
-            } else {
-                throw new Error("Unknown Error");
-            }
-        });
+        try {
+            await fetch(`${BASE_URL}/recipes`, requestOptions).then(async (response) => {
+                if (response.ok) {
+                    recipes = await response.json();
+                    refreshRecipeList();
+                } else {
+                    throw new Error("Unknown Error");
+                }
+            });
 
-    } catch (error) {
-        console.error(error);
-        alert(error);
-    }
+        } catch (error) {
+            console.error(error);
+            alert(error);
+        }
     }
 
     /**
@@ -363,6 +363,36 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function processLogout() {
         // Implement logout logic here
+        const requestOptions = {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*",
+                "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer"
+        }
     }
+
+        try {
+            await fetch(`${BASE_URL}/logout`, requestOptions).then(async (response) => {
+                if (response.ok) {
+                    sessionStorage.removeItem("auth-token");
+                    sessionStorage.removeItem("is-admin");
+                    window.location.href = "../login/login-page.html";
+                } else {
+                    throw new Error("Unknown Error");
+                }
+            });
+
+        } catch (error) {
+            console.error(error);
+            alert(error);
+        }
 
 });
