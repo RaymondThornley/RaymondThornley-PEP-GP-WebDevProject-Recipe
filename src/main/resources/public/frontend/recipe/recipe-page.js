@@ -377,10 +377,9 @@ window.addEventListener("DOMContentLoaded", () => {
             redirect: "follow",
             referrerPolicy: "no-referrer"
         }
-    }
 
         try {
-            await fetch(`${BASE_URL}/logout`, requestOptions).then(async (response) => {
+            await fetch(`${BASE_URL}/logout`, requestOptions).then((response) => {
                 if (response.ok) {
                     sessionStorage.removeItem("auth-token");
                     sessionStorage.removeItem("is-admin");
@@ -394,5 +393,6 @@ window.addEventListener("DOMContentLoaded", () => {
             console.error(error);
             alert(error);
         }
+    }
 
 });
