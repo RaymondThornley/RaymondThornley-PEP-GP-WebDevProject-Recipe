@@ -177,6 +177,7 @@ async function deleteIngredient() {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "*",
+            "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
         },
         redirect: "follow",
         referrerPolicy: "no-referrer"
@@ -218,7 +219,7 @@ function refreshIngredientList() {
 
     for (let i=0; i<ingredients.length; i++) {
         const newListItem = document.createElement("li");
-        newListItem.innerHTML = ingredients[i].name + ": " + ingredients[i].instructions;
+        newListItem.innerHTML = ingredients[i].name;
         ingredientListContainer.appendChild(newListItem);
     }
 }
