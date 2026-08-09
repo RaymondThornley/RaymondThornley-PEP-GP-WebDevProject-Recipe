@@ -92,6 +92,7 @@ window.addEventListener("DOMContentLoaded", () => {
             referrerPolicy: "no-referrer"
         }
 
+    try {
         await fetch(`${BASE_URL}/recipes?name=${name}`, requestOptions).then(async (response) => {
             if (response.ok) {
                 recipes = await response.json();
@@ -100,6 +101,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 throw new Error("Unknown Error");
             }
         });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
     }
 
     /**
@@ -142,6 +148,7 @@ window.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify(requestBody)
         }
 
+    try {
         await fetch(`${BASE_URL}/recipes`, requestOptions).then(async (response) => {
             if (response.ok) {
                 addRecipeNameInput.value = "";
@@ -152,6 +159,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 throw new Error("Unknown Error");
             }
         });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
     }
 
     /**
@@ -206,6 +218,7 @@ window.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify(requestBody)
         }
 
+    try {
         await fetch(`${BASE_URL}/recipes/${recipeId}`, requestOptions).then(async (response) => {
             if (response.ok) {
                 updateRecipeNameInput.value = "";
@@ -216,6 +229,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 throw new Error("Unknown Error");
             }
         });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
     }
 
     /**
@@ -256,11 +274,13 @@ window.addEventListener("DOMContentLoaded", () => {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers": "*",
+                "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
             },
             redirect: "follow",
             referrerPolicy: "no-referrer"
         }
 
+    try {
         await fetch(`${BASE_URL}/recipes/${recipeId}`, requestOptions).then(async (response) => {
             if (response.ok) {
                 deleteRecipeNameInput.value = "";
@@ -270,6 +290,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 throw new Error("Unknown Error");
             }
         });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
     }
 
     /**
@@ -294,6 +319,7 @@ window.addEventListener("DOMContentLoaded", () => {
             referrerPolicy: "no-referrer"
         }
 
+    try {
         await fetch(`${BASE_URL}/recipes`, requestOptions).then(async (response) => {
             if (response.ok) {
                 recipes = await response.json();
@@ -302,6 +328,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 throw new Error("Unknown Error");
             }
         });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
     }
 
     /**

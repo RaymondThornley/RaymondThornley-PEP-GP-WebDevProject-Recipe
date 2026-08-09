@@ -75,6 +75,7 @@ async function addIngredient() {
             body: JSON.stringify(requestBody)
         }
 
+    try {
         await fetch(`${BASE_URL}/ingredients`, requestOptions).then(async (response) => {
             if (response.ok) {
                 addIngredientNameInput.value = "";
@@ -84,6 +85,11 @@ async function addIngredient() {
                 throw new Error("Unknown Error");
             }
         });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
 }
 
 
@@ -112,6 +118,7 @@ async function getIngredients() {
         referrerPolicy: "no-referrer"
     }
 
+    try {
     await fetch(`${BASE_URL}/ingredients`, requestOptions).then(async (response) => {
         if (response.ok) {
             ingredients = await response.json();
@@ -120,6 +127,11 @@ async function getIngredients() {
             throw new Error("Unknown Error");
         }
     });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
 }
 
 
@@ -170,6 +182,7 @@ async function deleteIngredient() {
         referrerPolicy: "no-referrer"
     }
 
+    try {
     await fetch(`${BASE_URL}/ingredients/${ingredientId}`, requestOptions).then(async (response) => {
         if (response.ok) {
             deleteIngredientNameInput.value = "";
@@ -179,6 +192,11 @@ async function deleteIngredient() {
             throw new Error("Unknown Error");
         }
     });
+
+    } catch (error) {
+        console.error(error);
+        alert(error);
+    }
 }
 
 
