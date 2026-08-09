@@ -71,6 +71,35 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function searchRecipes() {
         // Implement search logic here
+        const name = searchInput.value;
+
+        if (name.length == 0) {
+            alert("Name field is blank.");
+            return;
+        }
+
+        const requestOptions = {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*"
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer"
+        }
+
+        await fetch(`${BASE_URL}/recipes?name=${name}`, requestOptions).then(async (response) => {
+            if (response.ok) {
+                recipes = await response.json();
+                refreshRecipeList();
+            } else {
+                throw new Error("Unknown Error");
+            }
+        });
     }
 
     /**
@@ -83,6 +112,46 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function addRecipe() {
         // Implement add logic here
+        const name = addRecipeNameInput.value;
+        const instructions = addRecipeInstructionsInput.value;
+
+        if (name.length == 0) {
+            alert("Name field is blank.");
+            return;
+        }
+        if (instructions.length == 0) {
+            alert("Instructions field is blank.");
+            return;
+        }
+
+        const requestBody = { name, instructions }
+
+        const requestOptions = {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*",
+                "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify(requestBody)
+        }
+
+        await fetch(`${BASE_URL}/recipes`, requestOptions).then(async (response) => {
+            if (response.ok) {
+                addRecipeNameInput.value = "";
+                addRecipeInstructionsInput.value = "";
+
+                await getRecipes();
+            } else {
+                throw new Error("Unknown Error");
+            }
+        });
     }
 
     /**
@@ -95,6 +164,58 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function updateRecipe() {
         // Implement update logic here
+        const name = updateRecipeNameInput.value;
+        const instructions = updateRecipeInstructionsInput.value;
+
+        if (name.length == 0) {
+            alert("Name field is blank.");
+            return;
+        }
+        if (instructions.length == 0) {
+            alert("Instructions field is blank.");
+            return;
+        }
+
+        let recipeId = null;
+        for (let i=0; i<recipes.length; i++) {
+            if (recipes[i].name == name) {
+                recipeId = recipes[i].id;
+                break;
+            }
+        }
+
+        if (recipeId === null) {
+            alert("Unable to find recipe.");
+            return;
+        }
+
+        const requestBody = { name, instructions }
+
+        const requestOptions = {
+            method: "PUT",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify(requestBody)
+        }
+
+        await fetch(`${BASE_URL}/recipes/${recipeId}`, requestOptions).then(async (response) => {
+            if (response.ok) {
+                updateRecipeNameInput.value = "";
+                updateRecipeInstructionsInput.value = "";
+
+                await getRecipes();
+            } else {
+                throw new Error("Unknown Error");
+            }
+        });
     }
 
     /**
@@ -106,6 +227,49 @@ window.addEventListener("DOMContentLoaded", () => {
      */
     async function deleteRecipe() {
         // Implement delete logic here
+        const name = deleteRecipeNameInput.value;
+
+        if (name.length == 0) {
+            alert("Name field is blank.");
+            return;
+        }
+
+        let recipeId = null;
+        for (let i=0; i<recipes.length; i++) {
+            if (recipes[i].name == name) {
+                recipeId = recipes[i].id;
+                break;
+            }
+        }
+
+        if (recipeId === null) {
+            alert("Unable to find recipe.");
+            return;
+        }
+
+        const requestOptions = {
+            method: "DELETE",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer"
+        }
+
+        await fetch(`${BASE_URL}/recipes/${recipeId}`, requestOptions).then(async (response) => {
+            if (response.ok) {
+                deleteRecipeNameInput.value = "";
+
+                await getRecipes();
+            } else {
+                throw new Error("Unknown Error");
+            }
+        });
     }
 
     /**
@@ -131,7 +295,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         await fetch(`${BASE_URL}/recipes`, requestOptions).then(async (response) => {
-            if (response.status == 200) {
+            if (response.ok) {
                 recipes = await response.json();
                 refreshRecipeList();
             } else {
