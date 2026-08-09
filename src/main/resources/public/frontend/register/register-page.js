@@ -91,12 +91,13 @@ async function processRegistration() {
     // await fetch(...)
     try {
         await fetch(`${BASE_URL}/register`, requestOptions).then((response) => {
+            console.log(response)
             if (response.status == 409) {
                 throw new Error("User/Email already exists.");
             } else if (response.status != 201) {
                 throw new Error("Something went wrong.");
             } else {
-                window.location.href = "/login"
+                window.location.href = "../login/login-page"
             }
         });
 
