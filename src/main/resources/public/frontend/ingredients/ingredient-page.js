@@ -13,9 +13,9 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  * - adminLink (if visible conditionally)
  */
 const addIngredientNameInput = document.getElementById("add-ingredient-name-input");
-const addIngredientSubmitInput = document.getElementById("add-ingredient-submit-input");
+const addIngredientSubmitInput = document.getElementById("add-ingredient-submit-button");
 const deleteIngredientNameInput = document.getElementById("delete-ingredient-name-input");
-const deleteIngredientSubmitInput = document.getElementById("delete-ingredient-submit-input");
+const deleteIngredientSubmitInput = document.getElementById("delete-ingredient-submit-button");
 const ingredientListContainer = document.getElementById("ingredient-list");
 
 /* 
