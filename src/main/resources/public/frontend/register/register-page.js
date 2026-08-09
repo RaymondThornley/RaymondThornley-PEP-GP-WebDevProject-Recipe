@@ -97,7 +97,7 @@ async function processRegistration() {
             } else if (response.status != 201) {
                 throw new Error("Something went wrong.");
             } else {
-                window.location.href = "../login/login-page"
+                window.location.href = "../login/login-page.html"
             }
         });
 
